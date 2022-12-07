@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CritmDmn">
+	<!-- 서비스기준 조회 -->
+	<select id="critmDmn.selectCritmDmn" parameterClass="map" resultClass="egovMap">
+		/*critmDmn.selectCritmDmn*/
+		select dmn_lgc_nm
+		     , dmn_phy_nm
+			 , dmn_group_nm
+			 , cdvl_tnm
+			 , datatp_nm
+			 , dat_len
+			 , cpnd_dmn_yn
+			 , inq_cnd_cn
+			 , arrg_cnd_cn
+		  from critm_dmn
+		 where 1=1
+		 <isNotEmpty property="dmnLgcNm">
+		   and dmn_lgc_nm  = #dmnLgcNm#
+		 </isNotEmpty>
+		 
+	</select>
+</sqlMap>

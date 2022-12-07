@@ -1,0 +1,90 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SrvcrItmDtlsHist">
+
+	
+	<!-- 서비스기준항목 조회 -->
+	<select id="srvcrItmDtlsHist.selectSrvcrItmDtlsHist" parameterClass="map" resultClass="egovMap">
+		/*srvcrItmDtlsHist.selectSrvcrItmDtlsHist*/
+		select srvcr_id
+		     , critm_id
+			 , srv_critm_ord
+			 , idnf_itm_yn
+			 , to_char(to_date(use_bgng_ymd,'yyyymmdd'),'yyyy-mm-dd') use_bgng_ymd
+			 , to_char(to_date(use_end_ymd,'yyyymmdd'),'yyyy-mm-dd') use_end_ymd
+			 , frst_crt_usrid
+			 , frst_crt_ptm
+			 , frst_crt_pgm_id
+			 , last_chg_usrid
+			 , last_chg_ptm
+			 , last_chg_pgm_id
+		  from srvcr_itm_dtls_hist
+		 where 1=1
+		 <isNotEmpty property="srvcrId">
+		 	and srvcr_id = #srvcrId#
+		 </isNotEmpty>
+		 <isNotEmpty property="critmId">
+		 	and critm_id = #critmId#
+		 </isNotEmpty>
+		 order by srv_critm_ord;
+				
+	</select>
+	<!-- 서비스기준항목 등록 -->
+	<insert id="srvcrItmDtlsHist.insertSrvcrItmDtlsHist">
+		/*srvcrItmDtlsHist.insertSrvcrItmDtlsHist*/
+		insert into srvcr_itm_dtls_hist
+		(
+			   srvcr_id
+		     , critm_id
+		     , vld_end_dt
+		     , vld_bgng_dt
+			 , srv_critm_ord
+			 , idnf_itm_yn
+			 , use_bgng_ymd
+			 , use_end_ymd
+			 , frst_crt_usrid
+			 , frst_crt_ptm
+			 , frst_crt_pgm_id
+			 , last_chg_usrid
+			 , last_chg_ptm
+			 , last_chg_pgm_id
+		)
+		select srvcr_id
+		     , critm_id
+		     , '99991231235959'
+		     , #vldBgngDt#
+			 , srv_critm_ord
+			 , idnf_itm_yn
+			 , replace(use_bgng_ymd,'-','')
+			 , replace(use_end_ymd,'-','')
+ 			 , '관리자'
+			 , now()
+			 , '관리자'
+			 , '관리자'
+			 , now()
+			 , '관리자'
+		  from srvcr_itm_dtls
+		 where srvcr_id = #srvcrId#
+		   and critm_id = #critmId#
+		   
+	</insert>
+	<!-- 서비스기준항목 변경 -->
+	<update id="srvcrItmDtlsHist.updateSrvcrItmDtlsHist">
+		/*SrvcrItmDtlsHist.updateSrvcrItmDtlsHist*/
+		update srvcr_itm_dtls_hist
+		   set vld_end_dt = #vldEndDt#
+		     , last_chg_usrid = '관리자'
+			 , last_chg_ptm = now()
+			 , last_chg_pgm_id = '관리자'
+		 where srvcr_id = #srvcrId#
+		   and critm_id = #critmId#
+		   and vld_end_dt = '99991231235959'
+	</update>
+	
+	<delete id="srvcrItmDtlsHist.deleteSrvcrItmDtlsHist">
+		delete from srvcr_itm_dtls_hist
+		 where srvcr_id = #srvcrId#
+		   and critm_id = #critmId# 
+	</delete>	
+</sqlMap>

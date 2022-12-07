@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Srvcr">
+
+	<select  id="srvcr.selectSrvcrId" resultClass="String">
+			select concat('SVC',to_char(nextval('sq_srvcr'),'FM0009')) srvcrId
+	</select>
+	<insert id="srvcr.insertSrvcr" >
+		
+		/*srvcr.insertSrvcr*/
+		insert into srvcr(
+			  srvcr_id 
+			, srvcr_nm
+			, srvcr_dc
+			, srvcr_view_nm
+			, task_div_scls_cd
+			, use_bgng_ymd
+			, use_end_ymd
+			, frst_crt_usrid
+			, frst_crt_ptm
+			, frst_crt_pgm_id
+			, last_chg_usrid
+			, last_chg_ptm
+			, last_chg_pgm_id
+		)values(
+		 	  #srvcrId#
+			, #srvcrNm#
+			, #srvcrDc#
+			, #srvcrViewNm#
+			, #taskDivSclsCd#
+			, replace(#useBgngYmd#,'-','')
+			, replace(#useEndYmd#,'-','')
+			, '관리자'
+			, now()
+			, '관리자'
+			, '관리자'
+			, now()
+			, '관리자'
+			
+		)
+	</insert>
+	<!-- 서비스기준변경 -->
+	<update id="srvcr.updateSrvcr" >
+		
+		/*srvcr.updateSrvcr*/
+		update srvcr
+		   set srvcr_nm = #srvcrNm#
+			 , srvcr_dc = #srvcrDc#
+			 , srvcr_view_nm =#srvcrViewNm#
+			 , task_div_scls_cd =#taskDivSclsCd#
+			 , use_bgng_ymd = replace(#useBgngYmd#,'-','')
+			 , use_end_ymd = replace(#useEndYmd#,'-','')
+			 , last_chg_usrid ='관리자'
+			 , last_chg_ptm = now()
+			 , last_chg_pgm_id = '관리자'
+		 where srvcr_id = #srvcrId# 
+	</update>
+	<!-- 서비스기준 조회 -->
+	<select id="srvcr.selectSrvcr" parameterClass="map" resultClass="egovMap">
+		/*srvcr.selectSrvcr*/
+		select srvcr_id 
+			 , srvcr_nm
+			 , srvcr_dc
+			 , srvcr_view_nm
+			 , task_div_scls_cd
+			 , (select cmm_cdvl_nm  from cmm_cd_dtl x where cmm_cd = 'TASK_DIV_SCLS_CD' and x.cmm_cdvl = a.task_div_scls_cd ) task_div_scls_nm
+			 , to_char(to_date(use_bgng_ymd,'yyyymmdd'),'yyyy-mm-dd') use_bgng_ymd
+			 , to_char(to_date(use_end_ymd,'yyyymmdd'),'yyyy-mm-dd') use_end_ymd
+			 , frst_crt_usrid
+			 , frst_crt_ptm
+			 , frst_crt_pgm_id
+			 , last_chg_usrid
+			 , last_chg_ptm
+			 , last_chg_pgm_id
+		  from srvcr a
+		 where 1=1
+		 <isNotEmpty property="srvcrNm">
+		 	and a.srvcr_nm like concat('%', #srvcrNm#, '%')
+		 </isNotEmpty>
+		 <isNotEmpty property="taskDivSclsCd">
+		 	and a.task_div_scls_cd = #taskDivSclsCd#
+		 </isNotEmpty>
+		 order by srvcr_nm
+	</select>
+	<!-- 서비스기준뷰명 존재하는지 체크하기 위한 조회 -->
+	<select id="srvcr.selectSrvcrViewNmCnt" parameterClass="map" resultClass="int">
+		/*srvcr.selectSrvcrViewNmCnt*/
+		select count(1) 
+		from ( 
+		select 1 cnt
+		  from srvcr
+		 where 1=1
+		 <isNotEmpty property="srvcrViewNm">
+		   and srvcr_view_nm =#srvcrViewNm#
+		 </isNotEmpty>
+		 <isNotEmpty property="srvcrId">
+		 	<![CDATA[
+		   		and srvcr_id <>#srvcrId#
+		   	]]>
+		 </isNotEmpty>
+		 limit 1) a
+	</select>
+<select id="srvcr.selectHtmlTags" resultClass="egovMap" parameterClass="map">
+select f_tags tags
+from (
+	select * 
+	from f_html_tags(#scrId# )
+	) v
+</select>
+</sqlMap>

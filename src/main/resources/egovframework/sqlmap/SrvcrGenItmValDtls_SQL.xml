@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SrvcrGenItmValDtls">
+
+	
+	<!-- 서비스기준 일반항목 값 내역 삭제 -->
+	<delete id="srvcrGenItmValDtls.deleteSrvcrGenItmValDtls">
+		/*srvcrGenItmValDtls.deleteSrvcrGenItmValDtls*/
+		delete from srvcr_gen_itm_val_dtls a
+		 where srvcr_id = #srvcrId#
+		 <isNotEmpty property="idnfItmVal1">
+		   and exists(select 1 
+			 		    from srvcr_idnf_itm_val_dtls x 
+					   where a.srvcr_id = x.srvcr_id
+					     and a.idnf_itm_val_dtls_sn = x.idnf_itm_val_dtls_sn
+					     and x.idnf_itm_val1 = #idnfItmVal1#
+					     <isNotEmpty property="idnfItmVal2">
+					 		and x.idnf_itm_val2 = #idnfItmVal2#
+					 	</isNotEmpty>
+					 	<isNotEmpty property="idnfItmVal3">
+					 		and x.idnf_itm_val3 = #idnfItmVal3#
+					 	</isNotEmpty>
+						<isNotEmpty property="idnfItmVal4">
+						 	and x.idnf_itm_val4 = #idnfItmVal4#
+						</isNotEmpty>
+						<isNotEmpty property="idnfItmVal5">
+						 	and x.idnf_itm_val5 = #idnfItmVal5#	
+						</isNotEmpty>
+						<isNotEmpty property="idnfItmVal6">
+							and x.idnf_itm_val6 = #idnfItmVal6#
+						</isNotEmpty>
+						<isNotEmpty property="idnfItmVal7">
+						 	and x.idnf_itm_val7 = #idnfItmVal7#
+						</isNotEmpty>
+						<isNotEmpty property="idnfItmVal8">
+						 	and x.idnf_itm_val8 = #idnfItmVal8#
+						</isNotEmpty>
+					 	<isNotEmpty property="idnfItmVal9">
+					 		and x.idnf_itm_val9 = #idnfItmVal9#
+					 	</isNotEmpty>
+					 	<isNotEmpty property="idnfItmVal10">
+					 		and x.idnf_itm_val10 = #idnfItmVal10#
+					  	</isNotEmpty>
+					  )
+		   
+	 		
+	 	</isNotEmpty>
+	 	
+	</delete>
+	<!-- 서비스기준 일반항목 값 내역 등록 -->
+	<insert id="srvcrGenItmValDtls.insertSrvcrGenItmValDtls" parameterClass="java.util.List">
+		/*srvcrGenItmValDtls.insertSrvcrGenItmValDtls*/
+		insert into srvcr_gen_itm_val_dtls( 
+			  srvcr_id
+		 	, idnf_itm_val_dtls_sn
+		 	, critm_id
+		 	, critm_val
+		 	, frst_crt_usrid
+		 	, frst_crt_ptm
+		 	, frst_crt_pgm_id
+		 	, last_chg_usrid
+		 	, last_chg_ptm
+		 	, last_chg_pgm_id
+		 )values
+		 <iterate  conjunction=",">
+		 (
+		 	  #[].srvcrId#
+		 	, #[].idnfItmValDtlsSn#
+		 	, upper(#[].critmId#)
+		 	, #[].critmVal#
+		 	, '관리자'
+		 	, now()
+		 	, '관리자'
+		 	, '관리자'
+		 	, now()
+		 	, '관리자'
+		 ) 
+		</iterate>		   
+	</insert>
+</sqlMap>

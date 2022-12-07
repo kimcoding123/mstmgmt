@@ -1,0 +1,328 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SrvcrIdnfItmValDtls">
+
+	
+	<!-- 서비스기준 식별항목 값 내역 삭제 -->
+	<delete id="srvcrIdnfItmValDtls.deleteSrvcrIdnfItmValDtls">
+		/*srvcrIdnfItmValDtls.deleteSrvcrIdnfItmValDtls*/
+		delete from srvcr_idnf_itm_val_dtls
+		 where srvcr_id = #srvcrId#
+		 <isNotEmpty property="idnfItmVal1">
+	 		and idnf_itm_val1 = #idnfItmVal1#
+	 	</isNotEmpty>
+	 	<isNotEmpty property="idnfItmVal2">
+	 		and idnf_itm_val2 = #idnfItmVal2#
+	 	</isNotEmpty>
+	 	<isNotEmpty property="idnfItmVal3">
+	 		and idnf_itm_val3 = #idnfItmVal3#
+	 	</isNotEmpty>
+		<isNotEmpty property="idnfItmVal4">
+		 	and idnf_itm_val4 = #idnfItmVal4#
+		</isNotEmpty>
+		<isNotEmpty property="idnfItmVal5">
+		 	and idnf_itm_val5 = #idnfItmVal5#	
+		</isNotEmpty>
+		<isNotEmpty property="idnfItmVal6">
+			and idnf_itm_val6 = #idnfItmVal6#
+		</isNotEmpty>
+		<isNotEmpty property="idnfItmVal7">
+		 	and idnf_itm_val7 = #idnfItmVal7#
+		</isNotEmpty>
+		<isNotEmpty property="idnfItmVal8">
+		 	and idnf_itm_val8 = #idnfItmVal8#
+		</isNotEmpty>
+	 	<isNotEmpty property="idnfItmVal9">
+	 		and idnf_itm_val9 = #idnfItmVal9#
+	 	</isNotEmpty>
+	 	<isNotEmpty property="idnfItmVal10">
+	 		and idnf_itm_val10 = #idnfItmVal10#
+	  	</isNotEmpty>
+	</delete>
+	
+	<!-- 서비스기준 식별항목 값 내역 등록 -->
+	<insert id="srvcrIdnfItmValDtls.inertSrvcrIdnfItmValDtls" parameterClass="java.util.List">
+
+		/*srvcrIdnfItmValDtls.insertSrvcrIdnfItmValDtls*/
+		insert into srvcr_idnf_itm_val_dtls
+		(
+			srvcr_id,
+			idnf_itm_val_dtls_sn,
+			idnf_itm_val1,
+			idnf_itm_val2,
+			idnf_itm_val3,
+			idnf_itm_val4,
+			idnf_itm_val5,
+			idnf_itm_val6,
+			idnf_itm_val7,
+			idnf_itm_val8,
+			idnf_itm_val9,
+			idnf_itm_val10,
+			vld_bgng_dt,
+			vld_end_dt,			
+			del_yn,
+			frst_crt_usrid,
+			frst_crt_ptm,
+			frst_crt_pgm_id,
+			last_chg_usrid,
+			last_chg_ptm,
+			last_chg_pgm_id
+		)values
+		<iterate  conjunction=",">
+		(
+			#[].srvcrId#,
+			#[].idnfItmValDtlsSn# ,
+			#[].idnfItmVal1#,
+			#[].idnfItmVal2#,
+			#[].idnfItmVal3#,
+			#[].idnfItmVal4#,
+			#[].idnfItmVal5#,
+			#[].idnfItmVal6#,
+			#[].idnfItmVal7#,
+			#[].idnfItmVal8#,
+			#[].idnfItmVal9#,
+			#[].idnfItmVal10#,
+			#[].vldBgngDt#,
+			#[].vldEndDt#,			
+			'N',
+			'관리자',
+			now(),
+			'관리자',
+			'관리자',
+			now(),
+			'관리자'
+		)
+		</iterate>
+	</insert>
+	<!-- 서비스기준 식별항목 값 내역 수정 -->
+	<update id="srvcrIdnfItmValDtls.updateSrvcrIdnfItmValDtls">
+	    /*srvcrIdnfItmValDtls.updateSrvcrIdnfItmValDtls*/
+		update srvcr_idnf_itm_val_dtls
+		   set vld_end_dt = #vldEndDt#
+		     , del_yn = #delYn#
+		   	 , last_chg_usrid = '관리자'
+			 , last_chg_ptm = now()
+			 , last_chg_pgm_id = '관리자'
+		 where srvcr_id = #srvcrId#
+		   and idnf_itm_val_dtls_sn = #idnfItmValDtlsSn#
+	</update>
+	<!-- iBatis에서 동적인 쿼리를 사용하기 위한 remapResults=true -->
+	<select id="srvcrIdnfItmValDtls.selectSrvcrDtls" parameterClass="map" resultClass="egovMap" remapResults="true">
+		/*srvcrIdnfItmValDtls.selectSrvcrDtls*/
+		select a.srvcr_id
+		     , a.idnf_itm_val_dtls_sn
+			 , a.idnf_itm_val1 
+			 , a.idnf_itm_val2 
+			 , a.idnf_itm_val3 
+			 , a.idnf_itm_val4 
+			 , a.idnf_itm_val5 
+			 , a.idnf_itm_val6 
+			 , a.idnf_itm_val7 
+			 , a.idnf_itm_val8 
+			 , a.idnf_itm_val9
+			 , a.idnf_itm_val10
+			 , a.vld_bgng_dt
+			 , a.vld_end_dt
+			 $columns$
+		  from srvcr_idnf_itm_val_dtls a
+		  left join crosstab(
+			'select a.idnf_itm_val_dtls_sn idnf_itm_val_dtls_sn1
+			      , a.critm_id
+			      , a.critm_val 
+			   from srvcr_gen_itm_val_dtls a
+			      , srvcr_itm_dtls b
+			  where a.srvcr_id = ''$srvcrId$'' 
+			    and a.srvcr_id = b.srvcr_id
+			    and a.critm_id = b.critm_id
+			  order by 1,b.srv_critm_ord
+			   '
+			  <isNotEmpty property="sql">
+			  ,'select  critm_id from srvcr_itm_dtls where srvcr_id=''$srvcrId$'' and idnf_itm_yn =''N'' order by srv_critm_ord'
+			  </isNotEmpty> 
+		) as b( 
+			   idnf_itm_val_dtls_sn1 numeric
+			  $sql$
+		  ) 
+		on( a.idnf_itm_val_dtls_sn = b.idnf_itm_val_dtls_sn1)
+		where 1=1
+			
+		  and a.srvcr_id = #srvcrId#
+		  and a.del_yn ='N'
+		 <isNotEmpty property="critYmd">
+		  		and replace(#critYmd#,'-','') between a.vld_bgng_dt  and a.vld_end_dt
+		 </isNotEmpty>
+	 	<isNotEmpty property="idnfItmVal1">
+	 		and a.idnf_itm_val1 = #idnfItmVal1#
+	 	</isNotEmpty>
+	 	<isNotEmpty property="idnfItmVal2">
+	 		and a.idnf_itm_val2 = #idnfItmVal2#
+	 	</isNotEmpty>
+	 	<isNotEmpty property="idnfItmVal3">
+	 		and a.idnf_itm_val3 = #idnfItmVal3#
+	 	</isNotEmpty>
+		<isNotEmpty property="idnfItmVal4">
+		 	and a.idnf_itm_val4 = #idnfItmVal4#
+		</isNotEmpty>
+		<isNotEmpty property="idnfItmVal5">
+		 	and a.idnf_itm_val5 = #idnfItmVal5#	
+		</isNotEmpty>
+		<isNotEmpty property="idnfItmVal6">
+			and a.idnf_itm_val6 = #idnfItmVal6#
+		</isNotEmpty>
+		<isNotEmpty property="idnfItmVal7">
+		 	and a.idnf_itm_val7 = #idnfItmVal7#
+		</isNotEmpty>
+		<isNotEmpty property="idnfItmVal8">
+		 	and a.idnf_itm_val8 = #idnfItmVal8#
+		</isNotEmpty>
+	 	<isNotEmpty property="idnfItmVal9">
+	 		and a.idnf_itm_val9 = #idnfItmVal9#
+	 	</isNotEmpty>
+	 	<isNotEmpty property="idnfItmVal10">
+	 		and a.idnf_itm_val10 = #idnfItmVal10#
+	  	</isNotEmpty>
+		order by idnf_itm_val1,idnf_itm_val2,idnf_itm_val3,idnf_itm_val4,idnf_itm_val5,idnf_itm_val6,idnf_itm_val7,idnf_itm_val8,idnf_itm_val9,idnf_itm_val10, vld_end_dt desc	   
+	</select>
+	<select id="srvcrIdnfItmValDtls.selectSrvcrIdnfItmValDtls" parameterClass="map" resultClass="egovMap">
+		/*srvcrIdnfItmValDtls.selectSrvcrIdnfItmValDtls*/
+		select a.srvcr_id
+		     , a.idnf_itm_val_dtls_sn
+			 , a.idnf_itm_val1 
+			 , a.idnf_itm_val2 
+			 , a.idnf_itm_val3 
+			 , a.idnf_itm_val4 
+			 , a.idnf_itm_val5 
+			 , a.idnf_itm_val6 
+			 , a.idnf_itm_val7 
+			 , a.idnf_itm_val8 
+			 , a.idnf_itm_val9
+			 , a.idnf_itm_val10
+			 , a.vld_bgng_dt
+			 , a.vld_end_dt
+		  from srvcr_idnf_itm_val_dtls a
+		 where del_yn ='N'
+		   and srvcr_id = #srvcrId# 
+		 <isNotEmpty property="idnfItmVal1">
+		 	and a.idnf_itm_val1 = #idnfItmVal1#
+		 </isNotEmpty>
+		 <isNotEmpty property="idnfItmVal2">
+		 	and a.idnf_itm_val2 = #idnfItmVal2#
+		 </isNotEmpty>
+		 <isNotEmpty property="idnfItmVal3">
+		 	and a.idnf_itm_val3 = #idnfItmVal3#
+		 </isNotEmpty>
+		 <isNotEmpty property="idnfItmVal4">
+		 	and a.idnf_itm_val4 = #idnfItmVal4#
+		 </isNotEmpty>
+		 <isNotEmpty property="idnfItmVal5">
+		 	and a.idnf_itm_val5 = #idnfItmVal5#	
+		 </isNotEmpty>
+		 <isNotEmpty property="idnfItmVal6">
+		 	and a.idnf_itm_val6 = #idnfItmVal6#
+		 </isNotEmpty>
+		 <isNotEmpty property="idnfItmVal7">
+		 	and a.idnf_itm_val7 = #idnfItmVal7#
+		 </isNotEmpty>
+		 <isNotEmpty property="idnfItmVal8">
+		 	and a.idnf_itm_val8 = #idnfItmVal8#
+		 </isNotEmpty>
+		 <isNotEmpty property="idnfItmVal9">
+		 	and a.idnf_itm_val9 = #idnfItmVal9#
+		 </isNotEmpty>
+		 <isNotEmpty property="idnfItmVal10">
+		 	and a.idnf_itm_val10 = #idnfItmVal10#
+		  </isNotEmpty>
+		  <isNotEmpty property="vldEndDt">
+		  	and a.vld_end_dt = #vldEndDt#
+		  </isNotEmpty>
+	</select>
+	<select id="srvcrIdnfItmValDtls.selectMaxIndfItmValDtlsSn" parameterClass="map" resultClass="int">
+		/*srvcrIdnfItmValDtls.selectMaxIndfItmValDtlsSn*/
+		select coalesce(max(idnf_itm_val_dtls_sn),0) idnf_itm_val_dtls_sn
+		  from srvcr_idnf_itm_val_dtls a
+		 where srvcr_id = #srvcrId#
+	</select>
+<select id="srvcrIdnfItmValDtls.selectSrvcrValDtls" resultClass="egovframework.rte.psl.dataaccess.util.EgovMap">
+/* srvcrIdnfItmValDtls.selectSrvcrValDtls */
+with v_idnf as 
+(
+	select *
+	from srvcr_idnf_itm_val_dtls
+	where srvcr_id = #srvcrId#
+	and   vld_end_dt = '99991231235959'
+    <isNotEmpty  property="idnfItmVal1">
+	and   idnf_itm_val1 = #idnfItmVal1#
+    </isNotEmpty>
+    <isNotEmpty  property="idnfItmVal2">
+	and   idnf_itm_val2 = #idnfItmVal2#
+    </isNotEmpty>
+    <isNotEmpty  property="idnfItmVal3">
+	and   idnf_itm_val3 = #idnfItmVal3#
+    </isNotEmpty>
+    <isNotEmpty  property="idnfItmVal4">
+	and   idnf_itm_val4 = #idnfItmVal4#
+    </isNotEmpty>
+    <isNotEmpty  property="idnfItmVal5">
+	and   idnf_itm_val5 = #idnfItmVal5#
+    </isNotEmpty>
+    <isNotEmpty  property="idnfItmVal6">
+	and   idnf_itm_val6 = #idnfItmVal6#
+    </isNotEmpty>
+    <isNotEmpty  property="idnfItmVal7">
+	and   idnf_itm_val7 = #idnfItmVal7#
+    </isNotEmpty>
+    <isNotEmpty  property="idnfItmVal8">
+	and   idnf_itm_val8 = #idnfItmVal8#
+    </isNotEmpty>
+    <isNotEmpty  property="idnfItmVal9">
+	and   idnf_itm_val9 = #idnfItmVal9#
+    </isNotEmpty>
+    <isNotEmpty   property="idnfItmVal10">
+	and   idnf_itm_val10 = #idnfItmVal10#
+    </isNotEmpty>	
+)	
+select cast(a.idnf_itm_val_dtls_sn as integer)  idnf_itm_val_dtls_sn
+     , cast(b.srv_critm_ord as integer) srv_critm_ord
+	 , idnf_itm_yn
+     , b.critm_id
+     , case when b.critm_id = 'ST00002' then vld_end_dt
+			when b.critm_id = 'ST00003' then vld_bgng_dt
+	        when srv_critm_ord =  1 then idnf_itm_val1
+	        when srv_critm_ord =  2 then idnf_itm_val2
+	        when srv_critm_ord =  3 then idnf_itm_val3
+	        when srv_critm_ord =  4 then idnf_itm_val4
+	        when srv_critm_ord =  5 then idnf_itm_val5
+	        when srv_critm_ord =  6 then idnf_itm_val6
+	        when srv_critm_ord =  7 then idnf_itm_val7
+	        when srv_critm_ord =  8 then idnf_itm_val8
+	        when srv_critm_ord =  9 then idnf_itm_val9
+	        when srv_critm_ord = 10 then idnf_itm_val10
+	   end critm_val
+	   , c.critm_nm
+from v_idnf         a
+   , srvcr_itm_dtls b
+   , critm  c
+where a.srvcr_id = b.srvcr_id
+and    b.critm_id = c.critm_id
+and   idnf_itm_yn = 'Y'
+union all
+select cast(a.idnf_itm_val_dtls_sn as integer) idnf_itm_val_dtls_sn
+     , cast(b.srv_critm_ord as integer) srv_critm_ord  
+	 , b.idnf_itm_yn
+     , a.critm_id
+	 , a.critm_val
+	 , d.critm_nm
+from srvcr_gen_itm_val_dtls  a
+   , srvcr_itm_dtls          b
+   , v_idnf                    c
+   , critm         d
+where a.srvcr_id = b.srvcr_id
+and   a.critm_id = b.critm_id
+and   b.critm_id  = d.critm_id
+and   a.srvcr_id             = c.srvcr_id
+and   a.idnf_itm_val_dtls_sn = c.idnf_itm_val_dtls_sn
+and   b.idnf_itm_yn = 'N'
+order by idnf_itm_val_dtls_sn , srv_critm_ord
+</select>
+</sqlMap>

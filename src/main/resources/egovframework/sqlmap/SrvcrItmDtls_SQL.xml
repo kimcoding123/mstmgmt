@@ -1,0 +1,127 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SrvcrItmDtls">
+
+	
+	<!-- 서비스기준항목 조회 -->
+	<select id="srvcrItmDtls.selectSrvcrItmDtls" parameterClass="map" resultClass="egovMap">
+		/*srvcrItmDtls.selectSrvcrItmDtls*/
+		select a.srvcr_id
+		     , a.critm_id
+			 , a.srv_critm_ord
+			 , a.idnf_itm_yn
+			 , to_char(to_date(a.use_bgng_ymd,'yyyymmdd'),'yyyy-mm-dd') use_bgng_ymd
+			 , to_char(to_date(a.use_end_ymd,'yyyymmdd'),'yyyy-mm-dd') use_end_ymd
+			 , b.critm_phy_nm
+			 , b.critm_nm
+			 , b.dmn_lgc_nm
+			 , c.dmn_phy_nm
+			 , c.dmn_group_nm
+			 , c.cdvl_tnm
+			 , c.datatp_nm
+			 , c.dat_len
+			 , c.cpnd_dmn_yn
+			 , c.dmn_phy_tbl_nm
+			 , c.inq_cnd_cn
+			 , c.arrg_cnd_cn
+		  from srvcr_itm_dtls a
+		     , critm b
+			 , critm_dmn c
+		 where a.srvcr_id = #srvcrId#
+		   and a.critm_id = b.critm_id
+		   and b.dmn_lgc_nm = c.dmn_lgc_nm
+		   <isNotEmpty property="idnfItmYn">
+		   		and a.idnf_itm_yn = #idnfItmYn#
+		   </isNotEmpty>
+		 order by a.srv_critm_ord
+				
+	</select>
+	<!-- 서비스기준항목 등록 -->
+	<insert id="srvcrItmDtls.insertSrvcrItmDtls">
+		/*srvcrItmDtls.insertSrvcrItmDtls*/
+		insert into srvcr_itm_dtls
+		(
+			   srvcr_id
+		     , critm_id
+			 , srv_critm_ord
+			 , idnf_itm_yn
+			 , use_bgng_ymd
+			 , use_end_ymd
+			 , frst_crt_usrid
+			 , frst_crt_ptm
+			 , frst_crt_pgm_id
+			 , last_chg_usrid
+			 , last_chg_ptm
+			 , last_chg_pgm_id
+		)values(
+			   #srvcrId#
+		     , #critmId#
+			 , #srvCritmOrd#
+			 , #idnfItmYn#
+			 , replace(#useBgngYmd#,'-','')
+			 , replace(#useEndYmd#,'-','')
+			 , '관리자'
+			 , now()
+			 , '관리자'
+			 , '관리자'
+			 , now()
+			 , '관리자'
+		)
+	</insert>
+	<!-- 서비스기준항목 변경 -->
+	<update id="srvcrItmDtls.updateSrvcrItmDtls">
+		/*srvcrItmDtls.updateSrvcrItmDtls*/
+		update srvcr_itm_dtls
+		   set srv_critm_ord = #srvCritmOrd#
+		     , idnf_itm_yn = #idnfItmYn#
+		     , use_bgng_ymd = replace(#useBgngYmd#,'-','')
+		     , use_end_ymd = replace(#useEndYmd#,'-','')
+		     , last_chg_usrid = '관리자'
+			 , last_chg_ptm = now()
+			 , last_chg_pgm_id = '관리자'
+		 where srvcr_id = #srvcrId#
+		   and critm_id = #critmId#
+	</update>
+	<!-- 서비스기준항목 변경 -->
+	<delete id="srvcrItmDtls.deleteSrvcrItmDtls">
+		/*srvcrItmDtls.deleteSrvcrItmDtls*/
+		delete from srvcr_itm_dtls
+		 where srvcr_id = #srvcrId#
+		   and critm_id = #critmId#
+	</delete>
+	
+<select id="srvcrItmDtls.selectSrvcrItmDtlsNew" parameterClass="map" resultClass="egovframework.rte.psl.dataaccess.util.EgovMap">
+/*srvcrItmDtls.selectSrvcrItmDtlsNew*/
+		select a.srvcr_id
+		     , a.critm_id
+			 , a.srv_critm_ord
+			 , a.idnf_itm_yn
+			 , to_char(to_date(a.use_bgng_ymd,'yyyymmdd'),'yyyy-mm-dd') use_bgng_ymd
+			 , to_char(to_date(a.use_end_ymd,'yyyymmdd'),'yyyy-mm-dd') use_end_ymd
+			 , a.critm_ref_id
+			 , a.ref_critm_id
+			 , b.critm_phy_nm
+			 , b.critm_nm
+			 , b.dmn_lgc_nm
+			 , c.dmn_phy_nm
+			 , c.dmn_group_nm
+			 , c.cdvl_tnm
+			 , c.datatp_nm
+			 , c.dat_len
+			 , c.cpnd_dmn_yn
+			 , c.dmn_phy_tbl_nm
+			 , c.inq_cnd_cn
+			 , c.arrg_cnd_cn
+		  from srvcr_itm_dtls a
+		     , critm b
+			 , critm_dmn c
+		 where a.srvcr_id = #srvcrId#
+		   and a.critm_id = b.critm_id
+		   and b.dmn_lgc_nm = c.dmn_lgc_nm
+		   <isNotEmpty property="idnfItmYn">
+		   		and a.idnf_itm_yn = #idnfItmYn#
+		   </isNotEmpty>
+		 order by a.srv_critm_ord
+</select>
+</sqlMap>

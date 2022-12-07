@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="SrvcrHist">
+
+	<insert id="srvcrHist.insertSrvcrHist" >
+		
+		/*srvcrHist.insertSrvcrHist*/
+		insert into srvcr_hist
+		(
+		   srvcr_id
+		 , vld_end_dt
+		 , vld_bgng_dt
+		 , srvcr_nm
+		 , srvcr_dc
+		 , srvcr_view_nm
+		 , task_div_scls_cd
+		 , use_bgng_ymd
+		 , use_end_ymd
+		 , frst_crt_usrid
+		 , frst_crt_ptm
+		 , frst_crt_pgm_id
+		 , last_chg_usrid
+		 , last_chg_ptm
+		 , last_chg_pgm_id
+		)
+		select srvcr_id
+			 , '99991231235959'
+			 , #vldBgngDt#
+			 , srvcr_nm
+			 , srvcr_dc
+			 , srvcr_view_nm
+			 , task_div_scls_cd
+			 , use_bgng_ymd
+			 , use_end_ymd
+			 , frst_crt_usrid
+			 , frst_crt_ptm
+			 , frst_crt_pgm_id
+			 , last_chg_usrid
+			 , last_chg_ptm
+			 , last_chg_pgm_id
+		  from srvcr
+		 where srvcr_id = #srvcrId#
+	</insert>
+	<update id="srvcrHist.updateSrvcrHist" >
+		
+		/*srvcrHist.updateSrvcrHist*/
+		update srvcr_hist 
+		  set  vld_end_dt = #vldEndDt#
+		    , last_chg_usrid = '관리자'
+		    , last_chg_ptm = now()
+		    , last_chg_pgm_id = '관리자'
+	    where srvcr_id = #srvcrId#
+	      and vld_end_dt = '99991231235959'
+	</update>
+	<!-- 서비스기준 조회 -->
+	<select id="srvcrHist.selectSrvcrHist" parameterClass="map" resultClass="egovMap">
+		/*srvcr.selectSrvcrHist*/
+		select srvcr_id
+		     , to_char(to_timestamp(vld_end_dt,'yyyymmddhh24miss'),'yyyy-mm-dd hh24:mi:ss') vld_end_dt
+		     , to_char(to_timestamp(vld_bgng_dt,'yyyymmddhh24miss'),'yyyy-mm-dd hh24:mi:ss') vld_bgng_dt
+			 , srvcr_nm
+			 , srvcr_dc
+			 , srvcr_view_nm
+			 , task_div_scls_cd
+			 , (select cmm_cdvl_nm  from cmm_cd_dtl x where cmm_cd = 'TASK_DIV_SCLS_CD' and x.cmm_cdvl = a.task_div_scls_cd ) task_div_scls_nm
+			 , to_char(to_date(use_bgng_ymd,'yyyymmdd'),'yyyy-mm-dd') use_bgng_ymd
+			 , to_char(to_date(use_end_ymd,'yyyymmdd'),'yyyy-mm-dd') use_end_ymd
+			 , frst_crt_usrid
+			 , frst_crt_ptm
+			 , frst_crt_pgm_id
+			 , last_chg_usrid
+			 , last_chg_ptm
+			 , last_chg_pgm_id
+		  from srvcr_hist a
+		 where 1=1
+		 <isNotEmpty property="srvcrId">
+		    and a.srvcr_id = #srvcrId#
+		 </isNotEmpty>
+		 <isNotEmpty property="srvcrNm">
+		 	and a.srvcr_nm like concat('%', #srvcrNm#, '%')
+		 </isNotEmpty>
+		 <isNotEmpty property="taskDivSclsCd">
+		 	and a.task_div_scls_cd = #taskDivSclsCd#
+		 </isNotEmpty>
+		 order by vld_end_dt desc
+	</select>
+</sqlMap>

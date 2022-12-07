@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CritmDmnLstIqiemDtls">
+	
+	<select id="critmDmnLstIqiemDtls.selectCritmDmnLstIqiemDtls" parameterClass="map" resultClass="egovMap">
+		/*critmDmnLstIqiemDtls.selectCritmDmnLstIqiemDtls*/
+		select a.dmn_lgc_nm
+		     , a.critm_id
+		     , a.col_ord
+		     , a.srch_cnd_trgt_itm_yn
+		     , b.critm_nm
+		     , b.critm_phy_nm
+			 , c.dmn_group_nm
+			 , c.cdvl_tnm
+		 from critm_dmn_lst_iqiem_dtls a
+		    , critm b
+			, critm_dmn c
+		where a.critm_id = b.critm_id
+		  and b.dmn_lgc_nm = c.dmn_lgc_nm
+		  <isNotEmpty property="dmnLgcNm">
+		  and a.dmn_lgc_nm = #dmnLgcNm#
+		  </isNotEmpty>
+		  order by col_ord;
+		  
+	</select>
+	<!-- iBatis에서 동적인 쿼리를 사용하기 위한 remapResults=true -->
+	<select id="critmDmnLstIqiemDtls.selectcritmDmnData" parameterClass="String" resultClass="egovMap" remapResults="true">
+		/*critmDmnLstIqiemDtls.selectcritmDmnData*/	
+		$sql$
+	</select>
+</sqlMap>

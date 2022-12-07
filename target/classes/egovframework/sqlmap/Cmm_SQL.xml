@@ -1,0 +1,388 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Cmm">
+	
+	<select id="cmm.selectCmmCdDtlList" parameterClass="egovframework.cmm.service.CmmCdDtlVo" resultClass="egovMap">
+		/*cmm.selectCmmCdDtl*/
+		SELECT A.CMM_CD
+		     , A.CMM_CDVL
+			 , A.CMM_CDVL_NM
+			 , A.CMM_CDVL_ENM
+			 , A.CMM_CDVL_SHRTN_NM
+			 , A.CMM_CDVL_DC
+			 , A.OTPT_ORD
+			 , A.UP_CMM_CDVL
+			 , A.APLCN_BGNG_YMD
+			 , A.APLCN_END_YMD
+			 , A.USE_YN
+			 , A.USER_DEFI_CN1
+			 , A.USER_DEFI_CN2
+			 , A.USER_DEFI_CN3
+			 , A.USER_DEFI_CN4
+			 , A.USER_DEFI_CN5
+			 , A.USER_DEFI_CN6
+			 , A.USER_DEFI_CN7
+			 , A.USER_DEFI_CN8
+			 , A.USER_DEFI_CN9
+			 , A.USER_DEFI_CN10
+			 , A.SBSET_YN1
+			 , A.SBSET_YN2
+			 , A.SBSET_YN3
+			 , A.SBSET_YN4
+			 , A.SBSET_YN5
+			 , A.SBSET_YN6
+			 , A.SBSET_YN7
+			 , A.SBSET_YN8
+			 , A.SBSET_YN9
+			 , A.SBSET_YN10
+			 , A.SBSET_YN11
+			 , A.SBSET_YN12
+			 , A.SBSET_YN13
+			 , A.SBSET_YN14
+			 , A.SBSET_YN15
+			 , A.SBSET_YN16
+			 , A.SBSET_YN17
+			 , A.SBSET_YN18
+			 , A.SBSET_YN19
+			 , A.SBSET_YN20
+		  FROM CMM_CD_DTL A
+		 WHERE 1=1
+		  <isNotEmpty property="cmmCd">
+		   AND CMM_CD = #cmmCd#
+		  </isNotEmpty>
+		  ORDER BY UP_CMM_CDVL
+	</select>
+	<!-- 유효시작일자/유효종료일자 값 생성(이력용) -->
+	<select id="cmm.selectBgngEndDt" resultClass="egovMap">
+		select to_char(now(),'yyyymmddhh24miss') vld_bgng_dt,  to_char(now()-'1 second'::interval,'yyyymmddhh24miss') vld_end_dt
+	</select>
+		<!-- 첨부파일id 채번용 -->
+	<select id="cmm.selectAtcflId" resultClass="String">
+		select lpad(NEXTVAL('sq_atchl_id')::varchar,10,'0')
+	</select>	
+<select id="cmm.selectTb" resultClass="egovframework.rte.psl.dataaccess.util.EgovMap">
+/* cmm.selectTb */
+SELECT 
+	 idc01,idc02,idc03,idc04,idc05,idc06,idc07,idc08,idc09,idc10
+    ,gc001,gc002,gc003,	gc004,gc005,gc006,gc007,gc008,gc009,gc010
+    ,gc011,gc012,gc013,	gc014,gc015,gc016,gc017,gc018,gc019,gc020
+FROM $tblNm$
+WHERE	1	=	1	
+<isNotEmpty property='idc01'>
+AND	idc01	=	#idc01#	
+</isNotEmpty>
+<isNotEmpty property='idc02'>
+AND	idc02	=	#idc02#	
+</isNotEmpty>
+<isNotEmpty property='idc03'>
+AND	idc03	=	#idc03#	
+</isNotEmpty>
+<isNotEmpty property='idc04'>
+AND	idc04	=	#idc04#	
+</isNotEmpty>
+<isNotEmpty property='idc05'>
+AND	idc05	=	#idc05#	
+</isNotEmpty>
+<isNotEmpty property='idc06'>
+AND	idc06	=	#idc06#	
+</isNotEmpty>
+<isNotEmpty property='idc07'>
+AND	idc07	=	#idc07#	
+</isNotEmpty>
+<isNotEmpty property='idc08'>
+AND	idc08	=	#idc08#	
+</isNotEmpty>
+<isNotEmpty property='idc09'>
+AND	idc09	=	#idc09#	
+</isNotEmpty>
+<isNotEmpty property='idc10'>
+AND	idc10	=	#idc10#	
+</isNotEmpty>
+<isNotEmpty property='gc001'>
+AND	gc001	=	#gc001#	
+</isNotEmpty>
+<isNotEmpty property='gc002'>
+AND	gc002	=	#gc002#	
+</isNotEmpty>
+<isNotEmpty property='gc003'>
+AND	gc003	=	#gc003#	
+</isNotEmpty>
+<isNotEmpty property='gc004'>
+AND	gc004	=	#gc004#	
+</isNotEmpty>
+<isNotEmpty property='gc005'>
+AND	gc005	=	#gc005#	
+</isNotEmpty>
+<isNotEmpty property='gc006'>
+AND	gc006	=	#gc006#	
+</isNotEmpty>
+<isNotEmpty property='gc007'>
+AND	gc007	=	#gc007#	
+</isNotEmpty>
+<isNotEmpty property='gc008'>
+AND	gc008	=	#gc008#	
+</isNotEmpty>
+<isNotEmpty property='gc009'>
+AND	gc009	=	#gc009#	
+</isNotEmpty>
+<isNotEmpty property='gc010'>
+AND	gc010	=	#gc010#	
+</isNotEmpty>
+<isNotEmpty property='gc011'>
+AND	gc011	=	#gc011#	
+</isNotEmpty>
+<isNotEmpty property='gc012'>
+AND	gc012	=	#gc012#	
+</isNotEmpty>
+<isNotEmpty property='gc013'>
+AND	gc013	=	#gc013#	
+</isNotEmpty>
+<isNotEmpty property='gc014'>
+AND	gc014	=	#gc014#	
+</isNotEmpty>
+<isNotEmpty property='gc015'>
+AND	gc015	=	#gc015#	
+</isNotEmpty>
+<isNotEmpty property='gc016'>
+AND	gc016	=	#gc016#	
+</isNotEmpty>
+<isNotEmpty property='gc017'>
+AND	gc017	=	#gc017#	
+</isNotEmpty>
+<isNotEmpty property='gc018'>
+AND	gc018	=	#gc018#	
+</isNotEmpty>
+<isNotEmpty property='gc019'>
+AND	gc019	=	#gc019#	
+</isNotEmpty>
+<isNotEmpty property='gc020'>
+AND	gc020	=	#gc020#	
+</isNotEmpty>
+</select>
+<insert id="cmm.insertTb">
+INSERT INTO TB0001		
+(	idc01	
+,	idc02	
+,	idc03	
+,	idc04	
+,	idc05	
+,	idc06	
+,	idc07	
+,	idc08	
+,	idc09	
+,	idc10	
+,	gc001	
+,	gc002	
+,	gc003	
+,	gc004	
+,	gc005	
+,	gc006	
+,	gc007	
+,	gc008	
+,	gc009	
+,	gc010	
+,	gc011	
+,	gc012	
+,	gc013	
+,	gc014	
+,	gc015	
+,	gc016	
+,	gc017	
+,	gc018	
+,	gc019	
+,	gc020	
+VALUES (		
+	#idc01#	
+,	#idc02#	
+,	#idc03#	
+,	#idc04#	
+,	#idc05#	
+,	#idc06#	
+,	#idc07#	
+,	#idc08#	
+,	#idc09#	
+,	#idc10#	
+,	#gc001#	
+,	#gc002#	
+,	#gc003#	
+,	#gc004#	
+,	#gc005#	
+,	#gc006#	
+,	#gc007#	
+,	#gc008#	
+,	#gc009#	
+,	#gc010#	
+,	#gc011#	
+,	#gc012#	
+,	#gc013#	
+,	#gc014#	
+,	#gc015#	
+,	#gc016#	
+,	#gc017#	
+,	#gc018#	
+,	#gc019#	
+,	#gc020#	)
+
+</insert>
+<update id="cmm.updateTb">
+UPDATE $tblNm$
+SET	idc01	=	#upidc01#	
+,	idc02	=	#upidc02#	
+,	idc03	=	#upidc03#	
+,	idc04	=	#upidc04#	
+,	idc05	=	#upidc05#	
+,	idc06	=	#upidc06#	
+,	idc07	=	#upidc07#	
+,	idc08	=	#upidc08#	
+,	idc09	=	#upidc09#	
+,	idc10	=	#upidc10#	
+,	gc001	=	#upgc001#	
+,	gc002	=	#upgc002#	
+,	gc003	=	#upgc003#	
+,	gc004	=	#upgc004#	
+,	gc005	=	#upgc005#	
+,	gc006	=	#upgc006#	
+,	gc007	=	#upgc007#	
+,	gc008	=	#upgc008#	
+,	gc009	=	#upgc009#	
+,	gc010	=	#upgc010#	
+,	gc011	=	#upgc011#	
+,	gc012	=	#upgc012#	
+,	gc013	=	#upgc013#	
+,	gc014	=	#upgc014#	
+,	gc015	=	#upgc015#	
+,	gc016	=	#upgc016#	
+,	gc017	=	#upgc017#	
+,	gc018	=	#upgc018#	
+,	gc019	=	#upgc019#	
+,	gc020	=	#upgc020#	
+WHERE	1	=	1	
+<isNotEmpty property='idc01'>
+AND	idc01	=	#idc01#	
+</isNotEmpty>
+<isNotEmpty property='idc02'>
+AND	idc02	=	#idc02#	
+</isNotEmpty>
+<isNotEmpty property='idc03'>
+AND	idc03	=	#idc03#	
+</isNotEmpty>
+<isNotEmpty property='idc04'>
+AND	idc04	=	#idc04#	
+</isNotEmpty>
+<isNotEmpty property='idc05'>
+AND	idc05	=	#idc05#	
+</isNotEmpty>
+<isNotEmpty property='idc06'>
+AND	idc06	=	#idc06#	
+</isNotEmpty>
+<isNotEmpty property='idc07'>
+AND	idc07	=	#idc07#	
+</isNotEmpty>
+<isNotEmpty property='idc08'>
+AND	idc08	=	#idc08#	
+</isNotEmpty>
+<isNotEmpty property='idc09'>
+AND	idc09	=	#idc09#	
+</isNotEmpty>
+<isNotEmpty property='idc10'>
+AND	idc10	=	#idc10#	
+</isNotEmpty>
+<isNotEmpty property='gc001'>
+AND	gc001	=	#gc001#	
+</isNotEmpty>
+<isNotEmpty property='gc002'>
+AND	gc002	=	#gc002#	
+</isNotEmpty>
+<isNotEmpty property='gc003'>
+AND	gc003	=	#gc003#	
+</isNotEmpty>
+<isNotEmpty property='gc004'>
+AND	gc004	=	#gc004#	
+</isNotEmpty>
+<isNotEmpty property='gc005'>
+AND	gc005	=	#gc005#	
+</isNotEmpty>
+<isNotEmpty property='gc006'>
+AND	gc006	=	#gc006#	
+</isNotEmpty>
+<isNotEmpty property='gc007'>
+AND	gc007	=	#gc007#	
+</isNotEmpty>
+<isNotEmpty property='gc008'>
+AND	gc008	=	#gc008#	
+</isNotEmpty>
+<isNotEmpty property='gc009'>
+AND	gc009	=	#gc009#	
+</isNotEmpty>
+<isNotEmpty property='gc010'>
+AND	gc010	=	#gc010#	
+</isNotEmpty>
+<isNotEmpty property='gc011'>
+AND	gc011	=	#gc011#	
+</isNotEmpty>
+<isNotEmpty property='gc012'>
+AND	gc012	=	#gc012#	
+</isNotEmpty>
+<isNotEmpty property='gc013'>
+AND	gc013	=	#gc013#	
+</isNotEmpty>
+<isNotEmpty property='gc014'>
+AND	gc014	=	#gc014#	
+</isNotEmpty>
+<isNotEmpty property='gc015'>
+AND	gc015	=	#gc015#	
+</isNotEmpty>
+<isNotEmpty property='gc016'>
+AND	gc016	=	#gc016#	
+</isNotEmpty>
+<isNotEmpty property='gc017'>
+AND	gc017	=	#gc017#	
+</isNotEmpty>
+<isNotEmpty property='gc018'>
+AND	gc018	=	#gc018#	
+</isNotEmpty>
+<isNotEmpty property='gc019'>
+AND	gc019	=	#gc019#	
+</isNotEmpty>
+<isNotEmpty property='gc020'>
+AND	gc020	=	#gc020#	
+</isNotEmpty>
+
+</update>
+<delete id="cmm.deleteTb">
+DELETE 
+FROM $tblNm$
+WHERE	1	=	1	
+<isNotEmpty property='idc01'>
+AND	idc01	=	#idc01#	
+</isNotEmpty>
+<isNotEmpty property='idc02'>
+AND	idc02	=	#idc02#	
+</isNotEmpty>
+<isNotEmpty property='idc03'>
+AND	idc03	=	#idc03#	
+</isNotEmpty>
+<isNotEmpty property='idc04'>
+AND	idc04	=	#idc04#	
+</isNotEmpty>
+<isNotEmpty property='idc05'>
+AND	idc05	=	#idc05#	
+</isNotEmpty>
+<isNotEmpty property='idc06'>
+AND	idc06	=	#idc06#	
+</isNotEmpty>
+<isNotEmpty property='idc07'>
+AND	idc07	=	#idc07#	
+</isNotEmpty>
+<isNotEmpty property='idc08'>
+AND	idc08	=	#idc08#	
+</isNotEmpty>
+<isNotEmpty property='idc09'>
+AND	idc09	=	#idc09#	
+</isNotEmpty>
+<isNotEmpty property='idc10'>
+AND	idc10	=	#idc10#	
+</isNotEmpty>
+</delete>
+</sqlMap>

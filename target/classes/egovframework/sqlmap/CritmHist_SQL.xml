@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="CritmHist">
+	<!-- 서비스기준 조회 -->
+	<select id="critmhist.selectCritmHist" parameterClass="map" resultClass="egovMap">
+/*critmhist.selectCritmHist*/
+		select a.critm_id
+		     , a.critm_nm
+			 , a.critm_dc
+			 , a.critm_phy_nm
+			 , a.datatp_cd
+			 , a.dmn_lgc_nm
+			 //, b.datatp_nm
+		  from critm_hist a
+		 where 1 = 1
+		 <isNotEmpty property="critmNm">
+		   and critm_nm  like concat('%', #critmNm#, '%')
+		 </isNotEmpty>
+		 order by critm_nm
+</select>
+<insert id="critmhist.insertCritmHist">
+/*critmhist.insertCritmHist*/
+		insert into critm_hist(
+			  critm_id 
+			, vld_end_dt
+			, vld_bgng_dt
+			, critm_nm
+			, critm_dc
+			, critm_phy_nm
+			, datatp_cd
+			, dmn_lgc_nm
+			, frst_crt_usrid
+			, frst_crt_ptm
+			, frst_crt_pgm_id
+			, last_chg_usrid
+			, last_chg_ptm
+			, last_chg_pgm_id
+		)values(
+		 	  #critmId#
+			, #vldEndDt#
+			, #vldBgngDt#
+			, #critmNm#
+			, #critmDc#
+			, #critmPhyNm#
+			, #datatpCd#
+			, #dmnLgcNm#
+			, '관리자'
+			, now()
+			, '관리자'
+			, '관리자'
+			, now()
+			, '관리자'
+			
+		)
+</insert>
+<update id="critmhist.updateCritmHist">
+/*critmhist.updateCritmHist*/
+		update critm_hist
+		   set 
+		       vld_end_dt = #vldEndDt#
+		     , critm_nm = #critmNm#
+			 , critm_dc = #critmDc#
+			 , critm_phy_nm =#critmPhyNm#
+			 , datatp_cd = #datatpCd#
+			 , dmn_lgc_nm = #dmnLgcNm#
+		     , last_chg_usrid = '관리자'
+			 , last_chg_ptm = now()
+			 , last_chg_pgm_id = '관리자'
+		 where critm_id = #critmId#
+		 and   vld_end_dt = '99991231235959'
+</update>
+<delete id="critmhist.deleteCritmHist">
+/*critmhist.deleteCritmHist*/
+		delete from critm_hist
+		 where critm_id = #critmId#
+</delete>
+</sqlMap>
