@@ -31,12 +31,12 @@
 			, #taskDivSclsCd#
 			, replace(#useBgngYmd#,'-','')
 			, replace(#useEndYmd#,'-','')
-			, '관리자'
+			, #frstCrtUsrid#
 			, now()
-			, '관리자'
-			, '관리자'
+			, #frstCrtPgmId#
+			, #lastChgUsrid#
 			, now()
-			, '관리자'
+			, #lastChgPgmId#
 			
 		)
 	</insert>
@@ -51,9 +51,9 @@
 			 , task_div_scls_cd =#taskDivSclsCd#
 			 , use_bgng_ymd = replace(#useBgngYmd#,'-','')
 			 , use_end_ymd = replace(#useEndYmd#,'-','')
-			 , last_chg_usrid ='관리자'
+			 , last_chg_usrid = #lastChgUsrid#
 			 , last_chg_ptm = now()
-			 , last_chg_pgm_id = '관리자'
+			 , last_chg_pgm_id = #lastChgPgmId#
 		 where srvcr_id = #srvcrId# 
 	</update>
 	<!-- 서비스기준 조회 -->

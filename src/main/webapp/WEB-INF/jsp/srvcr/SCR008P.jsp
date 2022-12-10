@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="popup-wrap">
 	<div class="popup-head">
-		<div class="head-txt">서비스기준내역 엑셀 업로드</div>
+		<div class="head-txt">서비스기준내역 엑셀 업로드(SCR008P)</div>
 		<a href="#none" class="popup-close-btn" onclick="popupCloseDirect(this)"></a>
 	</div>
 	<div class="popup-body">
@@ -78,6 +78,11 @@ $(document).ready(function(){
 		})
 		
 	});
+	function init(){
+		//화면컴포넌트제어
+		getAcctlCmpntId('${acctlPgmId}');
+	}
+	init();
 	
 });
 	

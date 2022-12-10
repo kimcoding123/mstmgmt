@@ -46,10 +46,10 @@
 		
 		/*srvcrHist.updateSrvcrHist*/
 		update srvcr_hist 
-		  set  vld_end_dt = #vldEndDt#
-		    , last_chg_usrid = '관리자'
-		    , last_chg_ptm = now()
-		    , last_chg_pgm_id = '관리자'
+		   set  vld_end_dt = #vldEndDt#
+		     , last_chg_usrid = #lastChgUsrid#
+			 , last_chg_ptm = now()
+			 , last_chg_pgm_id = #lastChgPgmId#
 	    where srvcr_id = #srvcrId#
 	      and vld_end_dt = '99991231235959'
 	</update>

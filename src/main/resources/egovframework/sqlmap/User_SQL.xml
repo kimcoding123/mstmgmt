@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="User">
+	
+	<select id="user.selectUser" parameterClass="map" resultClass="egovMap">
+		/*user.selectUser*/
+		select a.usrid
+		     , a.vld_bgng_dt
+			 , a.vld_end_dt
+			 , a.user_knme
+			 , a.user_enme
+			 , a.mbl_telno
+			 , a.eml_addr
+			 , a.lgn_id
+			 , a.pwd
+		  from vw_user a
+		 where 1=1
+		   and to_char(now(),'yyyymmddhh24miss') between vld_bgng_dt and vld_end_dt
+		  <isNotEmpty property="usrId">
+		   	and a.usrid = #usrId#
+		  </isNotEmpty>
+		  <isNotEmpty property="loginId">
+		   	and a.lgn_id = #loginId#
+		  </isNotEmpty>
+		  
+	</select>
+		
+</sqlMap>

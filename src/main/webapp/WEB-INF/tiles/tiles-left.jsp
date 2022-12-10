@@ -10,9 +10,9 @@
 		업무 기준/규칙 관리 시스템
 	</div>
 
-	<div class="lnb-tit-box">기준관리</div>
+	<div class="lnb-tit-box" id="divLeftMenuLabel">기준관리</div>
 
-	<ul class="lnb-list">
+	<ul class="lnb-list" id="ulLeftMenu">
 		<li>
 			<a href="#none" class="off">기준항목관리</a>
 			<div class="sub-menu">
@@ -48,26 +48,38 @@
 </nav>
 <!--left menu end-->
 <script>
-$('nav.lnb .lnb-list li > div > a').on('click',function (){
-	var menuId = $(this).attr('menuId');
-
-	if(menuId==undefined){
-		alert('menuId 를 셋팅하세요');
-		return;
-	}
-	//현재는 메뉴관리를 DB에서 하지 않기때문에 공통적인 패턴을 적용함
-	$.ajax({
-		url :"<c:url value='/cmm/open"+menuId+".do'/>"
-        ,type: "POST"
-        ,data : {}//parameter
-        ,dataType: 'html'  	   
-        ,success : function(data){
-            $('#pageContent').empty();
-            $('#pageContent').html(data);
+function setLeftMenuEvent(){
+	$('nav.lnb .lnb-list li > div > a').on('click',function (){
+		var menuId = $(this).attr('menuId');
+	    var url = $(this).attr('pgmCallUrl');
+		if(menuId==undefined){
+			alert('menuId 를 셋팅하세요');
+			return;
 		}
-	    ,error: function(){
-	    	
-	    }
+		//현재는 메뉴관리를 DB에서 하지 않기때문에 공통적인 패턴을 적용함
+		$.ajax({
+			url : contextRoot+'/'+url
+	        ,type: "POST"
+	        ,data : {'menuId':menuId}//parameter
+	        ,dataType: 'html'  	   
+	        ,success : function(data){
+	            $('#pageContent').empty();
+	            $('#pageContent').html(data);
+			}
+		});
 	});
-})
+
+	$('nav.lnb .lnb-list li > a ').on('click',function (){
+		$('nav.lnb .lnb-list li > a ').each(function(){
+			if(this.className!="no-sub-menu"){
+				this.className="";
+			}
+			
+		});
+		if(this.className!="no-sub-menu"){
+			this.className= "on";
+		}
+		
+	});
+}
 </script>

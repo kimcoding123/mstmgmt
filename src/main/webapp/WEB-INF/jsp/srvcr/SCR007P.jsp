@@ -2,7 +2,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <div class="popup-wrap">
 	<div class="popup-head">
-		<div class="head-txt">서비스 기준 내용 등록 팝업</div>
+		<div class="head-txt">서비스 기준 내용 등록(SCR007P)</div>
 		<a href="#none" class="popup-close-btn" onclick="popupCloseDirect(this)"></a>
 	</div>
 	<div class="popup-body">
@@ -90,6 +90,8 @@ $(document).ready(function(){
 			$('#selectBox').hide();
 			alert('목록코드는 화면으로.....메인화면에서 분리해야겠다.');
 		}
+		//화면컴포넌트제어
+		getAcctlCmpntId('${acctlPgmId}');
 	}
 	init();
 	

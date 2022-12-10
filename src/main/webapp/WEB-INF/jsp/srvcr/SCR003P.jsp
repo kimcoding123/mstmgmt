@@ -83,6 +83,8 @@ $(document).ready(function(){
 	datePicker();//달력 셋팅
 	function initComponent(){
 		setSelectComponent('popTaskDivSclsCd','TASK_DIV_SCLS_CD')
+		//화면컴포넌트제어
+		getAcctlCmpntId('${acctlPgmId}');
 	}
 	initComponent();
 	//팝업 적용버튼 클릭시

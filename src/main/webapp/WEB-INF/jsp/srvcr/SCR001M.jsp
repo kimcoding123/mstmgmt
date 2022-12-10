@@ -171,6 +171,8 @@ $(document).ready(function(){
 	function init(){
 		
 		setSelectComponent('selectTaskDivScls','TASK_DIV_SCLS_CD', 'ALL');
+		//화면컴포넌트제어
+		getAcctlCmpntId('${acctlPgmId}');
 	}
 	init();
 
@@ -262,9 +264,6 @@ $(document).ready(function(){
 		        setGridSrvcrItmData(srvcrId, data.list);
 	        	
 			}
-		    ,error: function(){
-		    	
-		    }
 		});
 	
 		/*개발시에는 ajax로 조회
@@ -341,9 +340,6 @@ $(document).ready(function(){
 	        ,success : function(html){
 	        	$('#popSrvcrRegPop').html(html);
 			}
-		    ,error: function(){
-		    	
-		    }
 		});
 		return false;
 	}
@@ -416,9 +412,6 @@ $(document).ready(function(){
 					}
 		        	
 				}
-			    ,error: function(){
-			    	alert('오류가 발생하였습니다.');
-			    }
 			});
 		}
 		
@@ -445,9 +438,6 @@ $(document).ready(function(){
 	    		gridSrvcr.resetData(data.list);		
 	    		gridSrvcrItm.clear();
 			}
-		    ,error: function(){
-		    	
-		    }
 		});
 	}
 	/*초기화버튼 클릭*/
@@ -473,9 +463,6 @@ $(document).ready(function(){
 	        ,success : function(html){
 	        	$('#popSrvcrItmMod').html(html);
 			}
-		    ,error: function(){
-		    	
-		    }
 		});
 		
 		setPopSrvcrItmMod_SrvcrItmData(rows[0])
@@ -531,9 +518,6 @@ $(document).ready(function(){
 	    		$('#popSrvcrHist').show();
 	    		//popGridSrvcrHist.refreshLayout(); 
 			}
-		    ,error: function(){
-		    	alert('오류가 발생하였습니다.');
-		    }
 		});
 	});
 	$('#btnAdd').on('click', function(){
@@ -609,9 +593,6 @@ $(document).ready(function(){
 	        ,success : function(html){
 	        	$('#pop').html(html);
 			}
-		    ,error: function(){
-		    	
-		    }
 		});
 		$('#pop').data('data', data);
 		$('#pop').data('callback',function(data){
@@ -758,9 +739,6 @@ $(document).ready(function(){
 					alert(data.errorMessage);
 				}
 			}
-		    ,error: function(){
-		    	alert('오류가 발생하였습니다.');
-		    }
 		});
 	});
 	/*서비스기준항목 유효성 검증 */

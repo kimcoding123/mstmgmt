@@ -68,6 +68,8 @@ $(document).ready(function(){
 	var critmDmnLstIqiemDtls;
 	function init(){
 		getCritmDmnLstIqiemDtls();
+		//화면컴포넌트제어
+		getAcctlCmpntId('${acctlPgmId}');
 	}
 	init();
 
@@ -89,9 +91,7 @@ $(document).ready(function(){
 	        	setGridColumn();	
 	        
 			}
-		    ,error: function(){
-		    	
-		    }
+
 		});
 		//
 	}
@@ -175,9 +175,7 @@ $(document).ready(function(){
 	        	//실제로는 ajax로 데이터 땡겨옴.
 	        	popGrid.resetData(data.list); 		
 			}
-		    ,error: function(){
-		    	
-		    }
+
 		});
 		//
 	});

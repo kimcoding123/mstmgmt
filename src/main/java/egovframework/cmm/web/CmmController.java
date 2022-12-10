@@ -21,6 +21,10 @@ import java.util.Map;
 import egovframework.cmm.service.CmmCdDtlVo;
 import egovframework.cmm.service.CmmService;
 import egovframework.cmm.service.impl.CmmServiceImpl;
+
+/* 접근제어 (12.10 추가) */
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+
 import egovframework.example.sample.service.EgovSampleService;
 import egovframework.example.sample.service.SampleDefaultVO;
 import egovframework.example.sample.service.SampleVO;
@@ -144,5 +148,20 @@ public class CmmController {
 		return mav;
 	}	
 
+	/* 접근제어 (12.10 추가) */
+	@RequestMapping(value = "/cmm/selectAcctlCmpntId.ajax")
+	public ModelAndView selectAcctlCmpntId(@RequestParam Map<String, String> param, ModelMap model) throws Exception {
+		
+		param.put("usrId", EgovUserDetailsHelper.getUserId());
+		List<?> list = cmmService.selectAcctlCmpntId(param);
+		
+		ModelAndView mav = new ModelAndView();
+		mav.setViewName("jsonView");
+		
+		mav.addObject("acctlCmpntIdList",list);
+		return mav;
+
+	}
+	
 
 }

@@ -140,6 +140,10 @@ $(document).ready(function(){
 	$('#btnPopInit').on('click',function(){
 		 $('#critmNm').val('');
 	});
+	
+	$('#btnPopInit').on('click',function(){
+		 $('#critmNm').val('');
+	});
 	/*popup script */
 	$('#btnPopSearch').on('click',function(){
 		//ajax로 땡겨온 데이터
@@ -153,9 +157,7 @@ $(document).ready(function(){
 	        	//실제로는 ajax로 데이터 땡겨옴.
 	        	popGrid.resetData(data.list); 		
 			}
-		    ,error: function(){
-		    	
-		    }
+
 		});
 		//
 	});
@@ -206,6 +208,13 @@ $(document).ready(function(){
 		$('#pop').data('callback')(retData);
 
 	});
+
+	function init(){
+		//화면컴포넌트제어
+		getAcctlCmpntId('${acctlPgmId}');
+	}
+	init();
+	
 });
 	
 </script>		

@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="Mnu">
+	
+	<select id="mnu.selectUserMenuTree" parameterClass="map" resultClass="egovMap">
+	
+		/*mnu.selectUserMenuTree*/
+		with recursive mnu_tree
+		as(
+			select a.mnu_id
+				 , a.vld_bgng_dt
+				 , a.vld_end_dt
+				 , a.up_mnu_id
+				 , a.mnu_nm
+				 , lpad(a.mnu_ord,3,'0') mnu_ord
+			     , 1 depth
+			  from vw_mnu a
+		     where 1=1
+		     <isNotEmpty property="upMnuId">
+			   	and a.up_mnu_id = #upMnuId#
+			  </isNotEmpty>
+			  <isEmpty property="upMnuId">
+			   	and a.up_mnu_id = 'ZZZZZZZZZZ'
+			  </isEmpty>
+		     union all	
+			select a.mnu_id
+				 , a.vld_bgng_dt
+				 , a.vld_end_dt
+				 , a.up_mnu_id
+				 , a.mnu_nm
+				 , concat(b.mnu_ord,'/',lpad(a.mnu_ord,3,'0')) mnu_ord
+			     , b.depth+1 depth
+			  from vw_mnu a
+			     , mnu_tree b
+			where a.up_mnu_id = b.mnu_id
+		)	
+	select mnu_id
+	     , mnu_nm
+	     , mnu_ord
+	     , pgm_call_url
+	     , up_mnu_id
+	     , usrid
+		 , depth
+		 , lead(depth)Over( order by x.mnu_ord) next_depth
+		 , lag(depth)Over( order by x.mnu_ord) pre_depth
+		 , pgm_flpth
+	  from (	
+			select  distinct b.mnu_id
+			     , c.mnu_nm
+			     , x.mnu_ord
+			     , d.pgm_call_url
+			     , c.up_mnu_id
+			     , a.usrid
+			     , x.depth
+			     , d.pgm_flpth
+			  from mnu_tree	x
+			     , vw_auth_usr a
+			     , vw_auth_mnu b
+			     , vw_mnu c
+			     left join vw_pgm d on (c.pgm_id = d.pgm_id)
+			     , vw_auth e
+			    where 1=1
+			      AND a.auth_id = b.auth_id
+			      and b.mnu_id= c.mnu_id
+			      and to_char(now(),'yyyymmddhh24miss') between a.vld_bgng_dt and a.vld_end_dt
+			      and to_char(now(),'yyyymmddhh24miss') between b.vld_bgng_dt and b.vld_end_dt
+			      and to_char(now(),'yyyymmddhh24miss') between c.vld_bgng_dt and c.vld_end_dt
+			      and a.auth_id = e.auth_id
+			      and to_char(now(),'yyyymmddhh24miss') between e.use_bgng_ymd and e.use_end_ymd
+				  and b.mnu_id = x.mnu_id
+				  <isNotEmpty property="usrId">
+				   	and a.usrid = #usrId#
+				  </isNotEmpty>
+				  <isNotEmpty property="depth">
+				   and depth = cast(#depth# as numeric) 
+				  </isNotEmpty>
+			) x
+	  order by x.mnu_ord
+
+   
+	</select>
+		
+</sqlMap>

@@ -3,22 +3,36 @@ package egovframework.cmm.web;
 import java.util.Map;
 
 import javax.annotation.Resource;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.context.request.RequestAttributes;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.multipart.MultipartHttpServletRequest;
+import org.springframework.web.servlet.ModelAndView;
 import org.springmodules.validation.commons.DefaultBeanValidator;
+
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
 import egovframework.example.sample.service.EgovSampleService;
 import egovframework.rte.fdl.property.EgovPropertyService;
 import egovframework.srvcr.service.SrvcrService;
+import egovframework.system.service.MenuMngService;
+import egovframework.system.service.UserMngService;
 
 @Controller
 public class MainController {
 
-	/** EgovSampleService */
-	@Resource(name = "sampleService")
-	private EgovSampleService sampleService;
-
+	@Resource(name = "userMngService")
+	private UserMngService userMngService;
+	
+	@Resource(name = "menuMngService")
+	private MenuMngService menuMngService;
+	
 	/** EgovPropertyService */
 	@Resource(name = "propertiesService")
 	protected EgovPropertyService propertiesService;
@@ -27,11 +41,42 @@ public class MainController {
 	@Resource(name = "beanValidator")
 	protected DefaultBeanValidator beanValidator;
 	
+	private final String LOGIN_PAGE_URL = "com/login.main";
 	
+	@RequestMapping(value="/openLogin.do")
+	public String openLogin() throws Exception{
+		return LOGIN_PAGE_URL;
+	}
+	@RequestMapping(value="/login.do")
+	public String login(@RequestParam Map<String, String> param, HttpSession session,  HttpServletRequest request, ModelMap model) throws Exception{
+		
+		Map user = userMngService.login(param.get("loginId"), param.get("password"));
+		if(user!=null) {
+			session.setAttribute("loginVo", user);//VO로 답는것이 좋아보이나 MAP으로 처리함.	
+		}else {
+ 			model.addAttribute("loginMessage", "사용자 정보가 없습니다.");
+ 			return LOGIN_PAGE_URL;
+		}
+		
+		
+		return "redirect:/index.do";
+	}
+	@RequestMapping(value="/logout.do")
+	public String logout(@RequestParam Map<String, String> param, HttpSession session,  HttpServletRequest request, ModelMap model) throws Exception{
+		session.invalidate();
+		return LOGIN_PAGE_URL;
+	}
 	@RequestMapping(value="/index.do")
 	public String index() throws Exception{
-		//서비스기준관리 화면 호출
-		return "srvcr/SCR001M.tiles";
+		
+		String page = menuMngService.selectUserFirstMenu();
+		
+		//페이지가 없으면 
+		if(StringUtils.isEmpty(page)) {
+			return "com/empty.tiles";
+		}
+		return page.replaceAll("jsp", "tiles");
+		//return "srvcr/SCR001M.tiles";
 	}
 	@RequestMapping(value="/cmm/openSCR001M.do")
 	public String openSCR001M() throws Exception{
@@ -63,7 +108,7 @@ public class MainController {
 
 	@RequestMapping(value="/cmm/openSCR013D.do")
 	public String openSCR013D() throws Exception{
-		// 화면 호출
+		// 화면 호출 
 		return "srvcr/SCR013D.jsp";
 	}
 
@@ -135,5 +180,7 @@ public class MainController {
 		model.addAttribute("dmnPhyTblNm",(String)param.get("dmnPhyTblNm"));
 		return "srvcr/SCR009R.jsp";
 	}
-	
+	public static void main(String[] args) {
+		System.out.println("srvcr/SCR002M.jsp".replaceAll("jsp", "tiles"));
+	}	
 }

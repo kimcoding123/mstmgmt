@@ -13,4 +13,9 @@
 	<sqlMap resource="egovframework/sqlmap/SrvcrIdnfItmValDtls_SQL.xml"/>
 	<sqlMap resource="egovframework/sqlmap/CritmDmnLstIqiemDtls_SQL.xml"/>
 	<sqlMap resource="egovframework/sqlmap/CritmDmn_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/User_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/Mnu_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/Pgm_SQL.xml"/>
+	<sqlMap resource="egovframework/sqlmap/ScrnCmpntAcctl_SQL.xml"/>
+	
 </sqlMapConfig>

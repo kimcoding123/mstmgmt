@@ -35,4 +35,8 @@ public interface CmmService {
 	String getAtcflId() throws Exception;
 	List selectTb(Map map) throws Exception;
 
+	/**
+	 * 접근제어 (12.10 추가)
+	 */
+	List selectAcctlCmpntId(Map param) throws Exception;
 }

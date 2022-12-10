@@ -63,12 +63,16 @@ $(document).ready(function(){
 		    	//실제로는 ajax로 데이터 땡겨옴.
 				popGridSrvcrHist.resetData(data.list);		
 			}
-		    ,error: function(){
-		    	alert('오류가 발생하였습니다.');
-		    }
+
 		});
 	}
-	selectSrvcrHist();
+	function init(){
+		selectSrvcrHist();
+		//화면컴포넌트제어
+		getAcctlCmpntId('${acctlPgmId}');
+	}
+	init();
+	
 });
 	
 </script>		

@@ -73,6 +73,11 @@ public class CmmDAO extends EgovAbstractDAO {
 	public void deleteTb(Map map) throws Exception{
 		insert("cmm.deleteTb", map);
 	}
-
+	/**
+	 * 접근제어컴포넌트id 목록 (12.10 추가)
+	 */
+	public List<?> selectAcctlCmpntId(Map param) throws Exception {
+		return list("scrnCmpntAcctl.selectAcctlCmpntId", param);
+	}
 
 }

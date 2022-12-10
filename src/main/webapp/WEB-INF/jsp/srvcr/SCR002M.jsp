@@ -157,7 +157,8 @@ $(document).ready(function(){
 	});
 	function init(){
 		setSelectComponent('selectTaskDivScls','TASK_DIV_SCLS_CD', 'SELECT');
-	}
+		//화면컴포넌트제어
+		getAcctlCmpntId('${acctlPgmId}');	}
 	init();
 	//업무구분 변경시
 	$('#selectTaskDivScls').on('change', function(){
@@ -181,9 +182,7 @@ $(document).ready(function(){
 	        	setSelectSrvcrOptions(data.list);
 	        	
 			}
-		    ,error: function(){
-		    	
-		    }
+
 		});
 	});
 	//서비스기준명 selectbox 셋팅
@@ -223,9 +222,7 @@ $(document).ready(function(){
 	        	gridSrvcrItmValDtls.resetData(data.list);
 	        	
 			}
-		    ,error: function(){
-		    	alert('오류가 발생하였습니다.');
-		    }
+
 		});
 	}
 	var srvcrItmList;
@@ -283,9 +280,7 @@ $(document).ready(function(){
 	    		gridSrvcrItmValDtlsHist.setColumns(columns);
 	        	
 			}
-		    ,error: function(){
-		    	alert('오류가 발생하였습니다.');
-		    }
+
 		});
 		
 		
@@ -334,9 +329,7 @@ $(document).ready(function(){
 		    			searchSrvcrDtls();
 		    		}).show();
 				}
-			    ,error: function(){
-			    	alert('오류가 발생하였습니다.');
-			    }
+
 			});
 		}
 	});
@@ -404,7 +397,7 @@ $(document).ready(function(){
 		console.log(dmnGroupNm);
 		var url = "<c:url value='/cmm/openSCR007P.do'/>";
 		//도메인물리테이블이 있으면 page 바꿈.
-		if(dmnPhyTblNm!=null){
+		if(dmnPhyTblNm!=null && dmnPhyTblNm!=''){
 			url = "<c:url value='/cmm/openSCR009P.do'/>";
 		}
 		//팝업 셋팅
@@ -417,9 +410,7 @@ $(document).ready(function(){
 	        ,success : function(html){
 	        	$('#popupRegCritmVal').html(html);
 			}
-		    ,error: function(){
-		    	
-		    }
+
 		});
 		$('.container').addClass('overlay');
 		
@@ -472,9 +463,7 @@ $(document).ready(function(){
 	        ,success : function(data){
 	        	gridSrvcrItmValDtlsHist.resetData(data.list);
 			}
-		    ,error: function(){
-		    	
-		    }
+
 		});
 		
 		
@@ -540,9 +529,7 @@ $(document).ready(function(){
 				}
 	        	
 			}
-		    ,error: function(){
-		    	alert('오류가 발생하였습니다.');
-		    }
+
 		});
 	});
 	

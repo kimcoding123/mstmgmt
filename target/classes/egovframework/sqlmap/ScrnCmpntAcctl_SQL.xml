@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE sqlMap PUBLIC "-//iBATIS.com//DTD SQL Map 2.0//EN" "http://www.ibatis.com/dtd/sql-map-2.dtd">
+
+<sqlMap namespace="ScrnCmpntAcctl">
+	
+	<select id="scrnCmpntAcctl.selectAcctlCmpntId" parameterClass="map" resultClass="egovMap">
+		select cntrl_atrbt_cd
+		     , scrn_cmpnt_id
+		  from vw_scrn_cmpnt_acctl a
+		 where acctl_itm_cd = '001'
+		   and pgm_id = #acctlPgmId#
+		   AND acctl_trgt_cd = #usrId#
+		   and to_char(now(),'yyyymmddhh24miss') between a.vld_bgng_dt and a.vld_end_dt
+		   and cntrl_yn ='Y'
+		union all
+		select cntrl_atrbt_cd
+		     , scrn_cmpnt_id
+		  from vw_scrn_cmpnt_acctl a
+		 where acctl_itm_cd = '002'
+		   and pgm_id = #acctlPgmId#
+		   AND  exists ( select 1
+						   from vw_auth_usr x
+						   where x.usrid = #usrId#
+						     and x.auth_id = a.acctl_trgt_cd)
+		   and to_char(now(),'yyyymmddhh24miss') between a.vld_bgng_dt and a.vld_end_dt
+		   and cntrl_yn ='Y'   
+	   
+	   
+   
+	</select>
+		
+</sqlMap>

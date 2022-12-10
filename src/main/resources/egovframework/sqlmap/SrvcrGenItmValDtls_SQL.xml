@@ -69,12 +69,12 @@
 		 	, #[].idnfItmValDtlsSn#
 		 	, upper(#[].critmId#)
 		 	, #[].critmVal#
-		 	, '관리자'
-		 	, now()
-		 	, '관리자'
-		 	, '관리자'
-		 	, now()
-		 	, '관리자'
+		 	, #[].frstCrtUsrid#
+			, now()
+			, #[].frstCrtPgmId#
+			, #[].lastChgUsrid#
+			, now()
+			, #[].lastChgPgmId#
 		 ) 
 		</iterate>		   
 	</insert>

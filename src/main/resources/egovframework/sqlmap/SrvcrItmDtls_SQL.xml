@@ -61,12 +61,12 @@
 			 , #idnfItmYn#
 			 , replace(#useBgngYmd#,'-','')
 			 , replace(#useEndYmd#,'-','')
-			 , '관리자'
-			 , now()
-			 , '관리자'
-			 , '관리자'
-			 , now()
-			 , '관리자'
+			 , #frstCrtUsrid#
+			, now()
+			, #frstCrtPgmId#
+			, #lastChgUsrid#
+			, now()
+			, #lastChgPgmId#
 		)
 	</insert>
 	<!-- 서비스기준항목 변경 -->
@@ -77,9 +77,9 @@
 		     , idnf_itm_yn = #idnfItmYn#
 		     , use_bgng_ymd = replace(#useBgngYmd#,'-','')
 		     , use_end_ymd = replace(#useEndYmd#,'-','')
-		     , last_chg_usrid = '관리자'
+		     , last_chg_usrid = #lastChgUsrid#
 			 , last_chg_ptm = now()
-			 , last_chg_pgm_id = '관리자'
+			 , last_chg_pgm_id = #lastChgPgmId#
 		 where srvcr_id = #srvcrId#
 		   and critm_id = #critmId#
 	</update>

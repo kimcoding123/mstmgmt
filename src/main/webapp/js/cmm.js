@@ -61,9 +61,6 @@ function setSelectComponent(objId, cmmCd, option){
 					$('#'+objId).append('<option value="'+this.cmmCdvl+'">'+this.cmmCdvlNm+'</option>');
 				});
 			}
-		    ,error: function(){
-		    	
-		    }
 		});
 }	
 //오늘날짜
@@ -98,3 +95,49 @@ function under2camel(str){
 		return arg.toUpperCase().replace('_','');
 	});
 }
+
+function getAcctlCmpntId(acctlPgmId){
+	$.ajax({
+		url : contextRoot+"/cmm/selectAcctlCmpntId.ajax"
+        ,type: "POST"
+        ,data : {'acctlPgmId': acctlPgmId}
+        ,dataType: 'json'  	   
+        ,success : function(data){
+			$(data.acctlCmpntIdList).each(function(){
+				var scrnCmpntId = this.scrnCmpntId;
+				
+			    if(this.cntrlAtrbtCd=='01'){//visible
+			        $('#'+scrnCmpntId).hide();
+			    }else if(this.cntrlAtrbtCd=='02'){//readOnly
+					$('#'+scrnCmpntId).attr('readonly',true);
+				}else if(this.cntrlAtrbtCd=='03'){//enabled
+					$('#'+scrnCmpntId).attr('disabled',true);
+				}
+});
+		}
+	});
+}
+
+
+
+
+
+(function($) {
+        $.ajaxSetup({
+               beforeSend: function(xhr) {
+                xhr.setRequestHeader("AJAX", true);
+            },
+            error: function(xhr, status, err) {
+                if (xhr.status == 401) {
+                	alert("로그인 정보가 없습니다. 로그인 페이지로 이동합니다.");
+					var offset = location.href.indexOf(location.host)+location.host.length;
+					var ctxPath = location.href.substring(offset, location.href.indexOf('/', offset+1));
+					location.href = ctxPath+'/openLogin.do';				
+                } else if (xhr.status == 403) {
+                       alert("권한이 없습니다.");
+                } else {
+                    alert("예외가 발생했습니다. 관리자에게 문의하세요.");
+                }
+            }
+        });
+})(jQuery);

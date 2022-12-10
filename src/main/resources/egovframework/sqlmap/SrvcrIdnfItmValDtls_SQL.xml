@@ -86,12 +86,12 @@
 			#[].vldBgngDt#,
 			#[].vldEndDt#,			
 			'N',
-			'관리자',
+			#[].frstCrtUsrid#,
 			now(),
-			'관리자',
-			'관리자',
+			#[].frstCrtPgmId#,
+			#[].lastChgUsrid#,
 			now(),
-			'관리자'
+			#[].lastChgPgmId#
 		)
 		</iterate>
 	</insert>
@@ -101,9 +101,9 @@
 		update srvcr_idnf_itm_val_dtls
 		   set vld_end_dt = #vldEndDt#
 		     , del_yn = #delYn#
-		   	 , last_chg_usrid = '관리자'
+		   	 , last_chg_usrid = #lastChgUsrid#
 			 , last_chg_ptm = now()
-			 , last_chg_pgm_id = '관리자'
+			 , last_chg_pgm_id = #lastChgPgmId#
 		 where srvcr_id = #srvcrId#
 		   and idnf_itm_val_dtls_sn = #idnfItmValDtlsSn#
 	</update>

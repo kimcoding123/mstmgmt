@@ -27,6 +27,9 @@ import egovframework.cmm.service.CmmCdDtlVo;
 import egovframework.cmm.service.CmmService;
 import egovframework.cmm.service.impl.CmmDAO;
 import egovframework.com.cmm.service.FileVO;
+
+import egovframework.com.cmm.util.EgovUserDetailsHelper;
+
 import egovframework.example.sample.service.EgovSampleService;
 import egovframework.example.sample.service.SampleDefaultVO;
 import egovframework.example.sample.service.SampleVO;
@@ -103,11 +106,12 @@ public class SrvcrServiceImpl extends EgovAbstractServiceImpl implements SrvcrSe
 
 	@Override
 	public void registSrvcr(List<Map> createList, List<Map> updateList, List<Map> deleteList) throws Exception {
+		Map defaultMap = EgovUserDetailsHelper.getDefaultMap();
 		//이력용 시작일시, 종료일시 조회
 		Map mapBgngEndDt = cmmService.selectBgngEndDt();
 		for(int i=0;i<createList.size();i++) {
 			Map map = createList.get(i);
-			
+			map.putAll(defaultMap);
 			//뷰명에 대한 중복검사
 			validSrvcrViewNm(map);
 			
@@ -126,6 +130,7 @@ public class SrvcrServiceImpl extends EgovAbstractServiceImpl implements SrvcrSe
 		for(int i=0;i<updateList.size();i++) {
 			Map map = updateList.get(i);
 			map.putAll(mapBgngEndDt);
+			map.putAll(defaultMap);
 			
 			validSrvcrViewNm(map);
 			//1.변경하고
@@ -164,6 +169,7 @@ public class SrvcrServiceImpl extends EgovAbstractServiceImpl implements SrvcrSe
 	
 	@Override
 	public void registSrvcrItmDtls(String srvcrId, List<Map> createList, List<Map> updateList, List<Map> deleteList) throws Exception {
+		Map defaultMap = EgovUserDetailsHelper.getDefaultMap();
 		Map param = new HashMap();
 		param.put("srvcrId",srvcrId);
 		int cnt = srvcrIdnfItmValDtlsDAO.selectMaxIndfItmValDtlsSn(param);
@@ -177,6 +183,7 @@ public class SrvcrServiceImpl extends EgovAbstractServiceImpl implements SrvcrSe
 			Map map = createList.get(i);
 			
 			
+			map.putAll(defaultMap);
 			map.putAll(mapBgngEndDt);
 			if(cnt>0 && "Y".equals(map.get("idnfItmYn"))){//식별자가 추가되면 데이터 꼬이므로 
 				throw new Exception("데이터가 존재합니다. 식별항목은 추가할수 없습니다.");
@@ -192,6 +199,7 @@ public class SrvcrServiceImpl extends EgovAbstractServiceImpl implements SrvcrSe
 		for(int i=0;i<updateList.size();i++) {
 			Map map = updateList.get(i);
 			map.putAll(mapBgngEndDt);
+			map.putAll(defaultMap);
 			
 			if(cnt>0 && "Y".equals(map.get("idnfItmYn"))){//식별자가 추가되면 데이터 꼬이므로 
 				throw new Exception("데이터가 존재합니다. 식별항목은 변경할수 없습니다.");
@@ -293,6 +301,7 @@ public class SrvcrServiceImpl extends EgovAbstractServiceImpl implements SrvcrSe
 	public void registSrvcrDtls(List<HashMap> createList, List<HashMap> updateList, List<HashMap> deleteList) throws Exception {
 		//이력용 시작일시, 종료일시 조회
 		Map mapBgngEndDt = cmmService.selectBgngEndDt();
+		Map defaultMap = EgovUserDetailsHelper.getDefaultMap();
 		
 		if(createList.size()>0) {
 			List listSrvcrGenItmValDtls = new ArrayList();
@@ -302,6 +311,7 @@ public class SrvcrServiceImpl extends EgovAbstractServiceImpl implements SrvcrSe
 				HashMap map = (HashMap)createList.get(i);
 				Map param = new HashMap();
 				param.putAll(map);
+				map.putAll(defaultMap);
 				
 				//동일키값을 가지고 있는지 중복검사.
 				param.remove("vldEndDt");
@@ -347,6 +357,7 @@ public class SrvcrServiceImpl extends EgovAbstractServiceImpl implements SrvcrSe
 			for(int i=0;i<updateList.size();i++) {
 				HashMap map = (HashMap)updateList.get(i);
 				map.put("delYn", "N");//삭제된건 아니지만...
+				map.putAll(defaultMap);
 				
 				if(i==0) {
 					idnfItmValDtlsSn = srvcrIdnfItmValDtlsDAO.selectMaxIndfItmValDtlsSn(map);		
@@ -381,16 +392,19 @@ public class SrvcrServiceImpl extends EgovAbstractServiceImpl implements SrvcrSe
 		}
 	}
 	private List getMapKey(HashMap<String, String> map) {
+		Map defaultMap = EgovUserDetailsHelper.getDefaultMap();
 		List list = new ArrayList();
 		
 		for(Entry<String,String> entry : map.entrySet()) {
 			String key = entry.getKey();
-			if(!key.equals("srvcrId") &&  !key.equals("idnfItmValDtlsSn") && !key.startsWith("idnfItmVal") && !key.equals("vldBgngDt") && !key.equals("vldEndDt")&& !key.equals("delYn")) {//식별항목값+유효시작/종료일시는 제외
+			if(!key.equals("srvcrId") &&  !key.equals("idnfItmValDtlsSn") && !key.startsWith("idnfItmVal") && !key.equals("vldBgngDt") && !key.equals("vldEndDt") && !key.equals("delYn")
+					 && !key.equals("frstCrtUsrid") && !key.equals("frstCrtPgmId") && !key.equals("lastChgUsrid") && !key.equals("lastChgPgmId")) {//식별항목값+유효시작/종료일시는 제외
 				Map keyMap = new HashMap();
 				keyMap.put("srvcrId",map.get("srvcrId"));
 				keyMap.put("idnfItmValDtlsSn",map.get("idnfItmValDtlsSn"));
 				keyMap.put("critmId",key.toUpperCase());
 				keyMap.put("critmVal",entry.getValue());
+				keyMap.putAll(defaultMap);
 				list.add(keyMap);
 			}
 
@@ -427,6 +441,7 @@ public class SrvcrServiceImpl extends EgovAbstractServiceImpl implements SrvcrSe
 		
 		List listSrvcrIdnfItmValDtls = new ArrayList();//서비스기준식별항목값을 insert 하기 위한 list
 		List listSrvcrGenItmValDtls = new ArrayList();//서비스기준일반항목값을 insert 하기 위한 list
+		Map defaultMap = EgovUserDetailsHelper.getDefaultMap();
 
 		int cells = sheet.getRow(0).getPhysicalNumberOfCells(); // title 로우의 셀갯수 
 		
@@ -438,8 +453,9 @@ public class SrvcrServiceImpl extends EgovAbstractServiceImpl implements SrvcrSe
 			mapSrvcrIdnfItmValDtls.put("idnfItmValDtlsSn", idnfItmValDtlsSn);
 			
 			
+			mapSrvcrIdnfItmValDtls.putAll(defaultMap);
 			XSSFRow row = sheet.getRow(i);
-			// int cells = row.getPhysicalNumberOfCells(); // 해당 Row에 사용자가 입력한 셀의 수를 가져온다
+			int cells = row.getLastCellNum(); // 해당 Row에 사용자가 입력한 셀의 수를 가져온다  // 12.10 이전엔 주석처리된 부분임
 
 			//System.out.println("셀수: " + cells);
 
@@ -449,6 +465,7 @@ public class SrvcrServiceImpl extends EgovAbstractServiceImpl implements SrvcrSe
 				mapSrvcrGenItmValDtls= new HashMap();
 				mapSrvcrGenItmValDtls.put("srvcrId", srvcrId);
 				mapSrvcrGenItmValDtls.put("idnfItmValDtlsSn", idnfItmValDtlsSn);
+				mapSrvcrGenItmValDtls.putAll(defaultMap);
 				XSSFCell cell = row.getCell(cellIndex); // 셀의 값을 가져온다 
 				String cellValue = getCellValue(cell);
 				/*
@@ -468,9 +485,11 @@ public class SrvcrServiceImpl extends EgovAbstractServiceImpl implements SrvcrSe
 				}else if("Y".equals(idnfItmYn)){
 					mapSrvcrIdnfItmValDtls.put("idnfItmVal"+(cellIndex+1),cellValue);
 				}else {
-					mapSrvcrGenItmValDtls.put("critmId",critmId);
-					mapSrvcrGenItmValDtls.put("critmVal",cellValue);
-					listSrvcrGenItmValDtls.add(mapSrvcrGenItmValDtls);
+					if(StringUtils.isEmpty(cellValue)==false) {
+						mapSrvcrGenItmValDtls.put("critmId",critmId);
+						mapSrvcrGenItmValDtls.put("critmVal",cellValue);
+						listSrvcrGenItmValDtls.add(mapSrvcrGenItmValDtls);
+					}
 				}
 			}//end of for cell
 			listSrvcrIdnfItmValDtls.add(mapSrvcrIdnfItmValDtls);

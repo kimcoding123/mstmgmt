@@ -21,6 +21,11 @@
         <put-attribute name="content" value=""/>
     </definition>
 
+	    <!-- 로그인이나 팝업창 처럼 frame 구분없이 통인 page를 사용하기 위함 -->
+    <definition name="*/*.main" template="/WEB-INF/tiles/tiles-main.jsp">
+    	<put-attribute name="header"   	value="/WEB-INF/tiles/tiles-header.jsp" />
+        <put-attribute name="content"   value="/WEB-INF/jsp/{1}/{2}.jsp" />
+    </definition>
 	
 	<definition name="*/*.jsp" extends="empty">
 	  	<put-attribute name="content"   value="/WEB-INF/jsp/{1}/{2}.jsp" />

@@ -4,7 +4,7 @@
 
 	<div class="popup-head">
 
-		<div class="head-txt">표준 서비스기준 항목 수정 팝업</div>
+		<div class="head-txt">표준 서비스기준 항목 수정(SCR006P)</div>
 
 		<a href="#none" class="popup-close-btn" onclick="popupCloseDirect(this)"></a>
 	</div>
@@ -81,6 +81,12 @@ $(document).ready(function(){
 		$('#popSrvcrItmMod').hide();
 		$('#popSrvcrItmMod').data('callback')(data);
 	});
+	function init(){
+		//화면컴포넌트제어
+		getAcctlCmpntId('${acctlPgmId}');
+	}
+	init();
+
 });
 	
 </script>		
